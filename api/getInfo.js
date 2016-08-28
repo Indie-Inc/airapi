@@ -12,18 +12,21 @@ var request = require('request'),
  * @param  {Function} failureCallback - Failure callback to invoke
  * @return {Void} - Hosting info is passed onto callbacks
  */
-function getInfo(hostingId) {
+function getInfo(hostingId, options) {
   var requestConfigs = _.assign({}, configs.DEFAULT_REQUEST_CONFIGS, {
     url: configs.HOSTING_INFO_URL + '/' + hostingId + '?' + serialize(configs.DEFAULT_REQUEST_PARAMS)
   });
 
   return new Promise(function(resolve, reject) {
     // Make request to parse hosting info
+    Object.assign(requestConfigs, options)
     request(requestConfigs, function(err, res, body) {
       if (!err && res.statusCode == 200) {
         resolve(JSON.parse(body));
       } else if (err) {
         reject(err);
+      } else {
+        reject();
       }
     });
   });
