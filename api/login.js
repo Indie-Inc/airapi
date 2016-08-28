@@ -29,6 +29,8 @@ function login() {
         resolve(body.access_token);
       } else if (err) {
         reject(err);
+      } else {
+        reject();
       }
     });
   });

@@ -16,7 +16,7 @@ var request = require('request'),
  *   role: {String}, Either 'guest' or 'host', default to 'host'
  * }
  */
-function getReviews(userId, options) {
+function getReviews(userId, options, reqOptions) {
   var DEFAULT_REVIEWS_PARAMS = _.assign({}, configs.DEFAULT_REQUEST_PARAMS, {
       page: 1,
       role: 'host'
@@ -24,7 +24,7 @@ function getReviews(userId, options) {
     searchOptions = _.assign({}, DEFAULT_REVIEWS_PARAMS, options),
     requestConfigs = _.assign({}, configs.DEFAULT_REQUEST_CONFIGS, {
       url: configs.USER_REVIEWS_URL + '/' + userId + '?' + serialize(searchOptions)
-    }),
+    }, reqOptions),
     reviews = [],
     $;
 

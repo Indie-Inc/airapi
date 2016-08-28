@@ -31,7 +31,7 @@ var request = require('request'),
  *   neighborhoods: {Array}, e.g: ['Belltown', 'Queen Anne']
  * }
  */
-function search(options) {
+function search(options, reqOptions) {
 
   return new Promise(function(resolve, reject) {
 
@@ -42,7 +42,7 @@ function search(options) {
 
     var requestConfigs = _.assign({}, configs.DEFAULT_REQUEST_CONFIGS, {
       url: configs.SEARCH_URL + '?' + serialize(options)
-    });
+    }, reqOptions);
 
     // Make request
     request(requestConfigs, function(err, res, body) {
@@ -54,6 +54,10 @@ function search(options) {
 
         // Reject
         reject(err);
+      } else {
+
+        // E.g. 404
+        reject();
       }
     });
   });

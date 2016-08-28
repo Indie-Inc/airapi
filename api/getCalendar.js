@@ -22,7 +22,7 @@ var request = require('request'),
  *   count: {Number}, // Get <x> months of availabilities starting at <month>
  * }
  */
-function getCalendar(hostingId, options) {
+function getCalendar(hostingId, options, reqOptions) {
   var today = new Date(),
     DEFAULT_AVAILABILITY_PARAMS = _.assign({}, configs.DEFAULT_REQUEST_PARAMS, {
       currency: 'USD',
@@ -50,7 +50,7 @@ function getCalendar(hostingId, options) {
       }, DEFAULT_AVAILABILITY_PARAMS, options),
       requestConfigs = _.assign({}, configs.DEFAULT_REQUEST_CONFIGS, {
         url: configs.AVAILABILITY_URL + '?' + serialize(searchOptions)
-      });
+      }, reqOptions);
 
     // Make request
     request(requestConfigs, function(err, res, body) {
@@ -58,6 +58,8 @@ function getCalendar(hostingId, options) {
         resolve(JSON.parse(body));
       } else if (err) {
         reject(err);
+      } else {
+        reject();
       }
     });
   });
